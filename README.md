@@ -4,4 +4,5 @@ In particular:
 -one project for facial keypoints recognition based on FCNN,
 -one project consisting on constructing a model on the MINDST dataset with only 200 labeled images, using and autoencoder
 -one project with task of pixel segmentation and using transfer learning
+-Language transformer
 Furthemore added sparsly some projects on dataloaders and construction of a FCNN with only numpy and pandas.
