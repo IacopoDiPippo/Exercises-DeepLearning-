@@ -20,21 +20,11 @@ class Encoder(nn.Module):
         self.hparams = hparams
         self.encoder = None
 
-        ########################################################################
-        # TODO: Initialize your encoder!                                       #                                       
+        # Initialize your encoder!                                       #                                       
         #                                                                      #
         # Possible layers: nn.Linear(), nn.BatchNorm1d(), nn.ReLU(),           #
         # nn.Sigmoid(), nn.Tanh(), nn.LeakyReLU().                             # 
-        # Look online for the APIs.                                            #
-        #                                                                      #
-        # Hint 1:                                                              #
-        # Wrap them up in nn.Sequential().                                     #
-        # Example: nn.Sequential(nn.Linear(10, 20), nn.ReLU())                 #
-        #                                                                      #
-        # Hint 2:                                                              #
-        # The latent_dim should be the output size of your encoder.            # 
-        # We will have a closer look at this parameter later in the exercise.  #
-        ########################################################################
+
 
 
         self.encoder=nn.Sequential(
@@ -49,9 +39,7 @@ class Encoder(nn.Module):
             nn.Linear(hparams["n_hidden2"],latent_dim)
         )
 
-        ########################################################################
-        #                           END OF YOUR CODE                           #
-        ########################################################################
+
 
     # Funzione per l'inizializzazione dei pesi usando He Initialization
     def weights_init_he(m):
@@ -74,7 +62,7 @@ class Decoder(nn.Module):
         self.decoder = None
 
         ########################################################################
-        # TODO: Initialize your decoder!                                       #
+        # Initialize your decoder!                                       #
         ########################################################################
 
 
@@ -90,9 +78,7 @@ class Decoder(nn.Module):
             nn.Linear(hparams["n_hidden"],output_size)
         )
 
-        ########################################################################
-        #                           END OF YOUR CODE                           #
-        ########################################################################
+        
 
     def forward(self, x):
         # feed x into decoder!
@@ -114,7 +100,7 @@ class Autoencoder(nn.Module):
     def forward(self, x):
         reconstruction = None
         ########################################################################
-        # TODO: Feed the input image to your encoder to generate the latent    #
+        #  Feed the input image to your encoder to generate the latent    #
         #  vector. Then decode the latent vector and get your reconstruction   #
         #  of the input.                                                       #
         ########################################################################
@@ -122,16 +108,14 @@ class Autoencoder(nn.Module):
         reconstruction=self.encoder(x)
         reconstruction=self.decoder(reconstruction)
 
-        ########################################################################
-        #                           END OF YOUR CODE                           #
-        ########################################################################
+      
         return reconstruction
 
     def set_optimizer(self):
 
         self.optimizer = None
         ########################################################################
-        # TODO: Define your optimizer.                                         #
+        #  Define your optimizer.                                         #
         ########################################################################
         self.optimizer=optim.Adam(
             self.parameters(),
@@ -139,9 +123,7 @@ class Autoencoder(nn.Module):
             weight_decay=self.hparams["decay_rate"]
             )
 
-        ########################################################################
-        #                           END OF YOUR CODE                           #
-        ########################################################################
+       
 
     def training_step(self, batch, loss_func):
         """
@@ -150,23 +132,11 @@ class Autoencoder(nn.Module):
         """
         loss = None
         ########################################################################
-        # TODO:                                                                #
+        #                                                                 #
         # Complete the training step, similarly to the way it is shown in      #
         # train_classifier() in the notebook, following the deep learning      #
         # pipeline.                                                            #
-        #                                                                      #
-        # Hint 1:                                                              #
-        # Don't forget to reset the gradients before each training step!       #
-        #                                                                      #
-        # Hint 2:                                                              #
-        # Don't forget to set the model to training mode before training!      #
-        #                                                                      #
-        # Hint 3:                                                              #
-        # Don't forget to reshape the input, so it fits fully connected layers.#
-        #                                                                      #
-        # Hint 4:                                                              #
-        # Don't forget to move the data to the correct device!                 #                                     
-        ########################################################################
+        #
         ae_trainer=pl.Trainer(
             max_epochs=30,
             gpus=1 if torch.cuda.is_available() else None,
@@ -174,9 +144,7 @@ class Autoencoder(nn.Module):
         )
 
 
-        ########################################################################
-        #                           END OF YOUR CODE                           #
-        ########################################################################
+ 
         return loss
 
     def validation_step(self, batch, loss_func):
@@ -186,13 +154,11 @@ class Autoencoder(nn.Module):
         """
         loss = None
         ########################################################################
-        # TODO:                                                                #
+        #                                                               #
         # Complete the validation step, similraly to the way it is shown in    #
         # train_classifier() in the notebook.                                  #
         #                                                                      #
-        # Hint 1:                                                              #
-        # Here we don't supply as many tips. Make sure you follow the pipeline #
-        # from the notebook.                                                   #
+                                                         #
         ########################################################################
 
 
@@ -210,9 +176,7 @@ class Autoencoder(nn.Module):
             pred=self.forward(images)
             loss=loss_func(pred,images)
 
-        ########################################################################
-        #                           END OF YOUR CODE                           #
-        ########################################################################
+    
         return loss
 
     def getReconstructions(self, loader=None):
@@ -246,7 +210,7 @@ class Classifier(nn.Module):
 
         
         ########################################################################
-        # TODO:                                                                #
+        #                                                               #
         # Given an Encoder, finalize your classifier, by adding a classifier   #   
         # block of fully connected layers.                                     #                                                             
         ########################################################################
@@ -264,9 +228,7 @@ class Classifier(nn.Module):
             )
 
         #self.model.apply(weights_init_he)
-        ########################################################################
-        #                           END OF YOUR CODE                           #
-        ########################################################################
+      
 
         self.set_optimizer()
         
@@ -297,9 +259,6 @@ class Classifier(nn.Module):
             weight_decay=self.hparams["decay_rate"]
             )
 
-        ########################################################################
-        #                           END OF YOUR CODE                           #
-        ########################################################################
 
     def getAcc(self, loader=None):
         
